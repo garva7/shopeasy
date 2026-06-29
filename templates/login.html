@@ -9,8 +9,7 @@
                 <div class="card-body p-4">
                     <h1 class="h4 text-center mb-4">Login</h1>
 
-                    <!-- Posts to the /login route; Flask validates on the server -->
-                    <form method="POST" action="{{ url_for('login') }}">
+                    <form method="POST" action="{{ url_for('login') }}" novalidate>
                         <div class="mb-3">
                             <label for="email" class="form-label">Email</label>
                             <input type="email" class="form-control" id="email" name="email"
