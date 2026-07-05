@@ -12,21 +12,24 @@
             <p class="text-muted mb-2">Category: {{ product.category.name }}</p>
             <p>{{ product.description }}</p>
 
-            <div class="mb-3">
+            <div class="mb-3" id="product-info"
+                 data-price="{{ product.price }}"
+                 data-discount="{{ product.discount_percent }}"
+                 data-stock="{{ product.stock }}">
                 <span class="original-price me-2">Rs. {{ product.price | int }}</span>
-                <span class="h4 fw-bold text-dark">Rs. {{ final_price }}</span>
+                <span class="h4 fw-bold text-dark" id="final-price">Rs. {{ final_price }}</span>
                 <span class="badge bg-success ms-2">{{ product.discount_percent }}% OFF</span>
             </div>
 
             <p class="mb-4">Availability:
                 {% if product.stock > 0 %}
-                    <span class="badge bg-success">In Stock</span>
+                    <span class="badge bg-success" id="stock-status">In Stock</span>
                 {% else %}
-                    <span class="badge bg-danger">Out of Stock</span>
+                    <span class="badge bg-danger" id="stock-status">Out of Stock</span>
                 {% endif %}
             </p>
 
-            <button class="btn btn-dark btn-lg" onclick="addToCart('{{ product.name }}')"
+            <button class="btn btn-dark btn-lg" id="add-to-cart-btn" onclick="addToCart('{{ product.name }}')"
                     {% if product.stock <= 0 %}disabled{% endif %}>
                 Add to Cart
             </button>
@@ -36,4 +39,8 @@
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='product.js') }}"></script>
 {% endblock %}

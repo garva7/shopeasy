@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        noResults.classList.toggle('d-none', visibleCount > 0);
+        if (noResults) {
+            noResults.classList.toggle('d-none', visibleCount > 0);
+        }
     });
 });
