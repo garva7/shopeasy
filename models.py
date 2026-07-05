@@ -28,7 +28,7 @@ class Category(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    parent = db.relationship("Category", remote_side=[id], backref="subcategories")
+    parent = db.relationship("Category", remote_side=[id], backref=db.backref("subcategories", cascade="all, delete-orphan"))
 
 
 class Product(db.Model):
@@ -40,12 +40,12 @@ class Product(db.Model):
     image = db.Column(db.String(255))
     price = db.Column(db.Numeric(10, 2), nullable=False)
     stock = db.Column(db.Integer, default=0)
-    discount_percent = db.Column(db.String(10))
+    discount_percent = db.Column(db.Integer, default=0)
     description = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    category = db.relationship("Category", backref="products")
+    category = db.relationship("Category", backref=db.backref("products", cascade="all, delete-orphan"))
 
 class Enquiry(db.Model):
     __tablename__ = "enquiries"

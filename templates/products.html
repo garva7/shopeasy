@@ -47,8 +47,10 @@
                     <div class="mt-auto d-grid gap-2">
                         <a href="{{ url_for('product_detail', product_id=p.id) }}"
                            class="btn btn-sm btn-outline-dark">View Details</a>
-                        <button class="btn btn-sm btn-dark"
-                                onclick="addToCart('{{ p.name }}')">Add to Cart</button>
+                        <form method="POST" action="{{ url_for('add_to_cart', product_id=p.id) }}" class="d-inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-sm btn-dark">Add to Cart</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -97,5 +99,4 @@
 {% endblock %}
 
 {% block scripts %}
-<script src="{{ url_for('static', filename='catalog.js') }}"></script>
 {% endblock %}

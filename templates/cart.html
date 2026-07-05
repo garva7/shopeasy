@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block title %}ShopEasy - Cart{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <h1 class="h3 mb-4">Shopping Cart</h1>
+    
+    {% if cart_items %}
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in cart_items %}
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ item.product.image }}" alt="{{ item.product.name }}" class="me-3" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+                                    <div>
+                                        <h6 class="mb-0">{{ item.product.name }}</h6>
+                                        {% if item.product.discount_percent and item.product.discount_percent|int > 0 %}
+                                        <small class="text-muted">Original: Rs. {{ item.product.price | int }}</small>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Rs. {{ item.final_price }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('update_cart', product_id=item.product.id) }}" class="d-flex align-items-center gap-2">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control form-control-sm" style="width: 80px;">
+                                    <button type="submit" class="btn btn-sm btn-outline-dark">Update</button>
+                                </form>
+                            </td>
+                            <td class="fw-bold">Rs. {{ item.item_total }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('remove_from_cart', product_id=item.product.id) }}" class="d-inline">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-4">
+        <div class="col-md-6 offset-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="mb-3">Order Summary</h5>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Subtotal</span>
+                        <span>Rs. {{ total }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span>Shipping</span>
+                        <span>Free</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between fw-bold fs-5">
+                        <span>Total</span>
+                        <span>Rs. {{ total }}</span>
+                    </div>
+                    <div class="d-grid mt-3">
+                        <a href="{{ url_for('products') }}" class="btn btn-outline-dark">Continue Shopping</a>
+                        <button class="btn btn-dark mt-2" disabled>Proceed to Checkout (Not Implemented)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="text-center py-5">
+        <p class="text-muted mb-3">Your cart is empty.</p>
+        <a href="{{ url_for('products') }}" class="btn btn-dark">Start Shopping</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

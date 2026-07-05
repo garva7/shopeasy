@@ -1,4 +1,4 @@
-{% extends 'admin/base_admin.html' %}
+﻿{% extends 'admin/base_admin.html' %}
 {% block title %}Manage Subcategories{% endblock %}
 
 {% block content %}
@@ -28,8 +28,8 @@
                     <td>{{ sub.description or '—' }}</td>
                     <td>
                         <a href="{{ url_for('admin.edit_subcategory', id=sub.id) }}" class="btn btn-sm btn-outline-dark me-1">Edit</a>
-                        <form method="POST" action="{{ url_for('admin.delete_subcategory', id=sub.id) }}" class="d-inline"
-                              onsubmit="return confirm('Delete this subcategory?')">
+                        <form method="POST" action="{{ url_for('admin.delete_subcategory', id=sub.id) }}" class="d-inline" onsubmit="return confirm('Delete this subcategory?')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                         </form>
                     </td>

@@ -89,34 +89,35 @@ source .venv/Scripts/activate
 pip install -r requirements.txt
 ```
 
-### Database setup (MySQL)
+### Database setup
 
-1. Start MySQL from the XAMPP control panel
-2. Open phpMyAdmin at `http://localhost/phpmyadmin`
-3. Create a database named `shopeasy`
-4. Confirm `config.py` has the MySQL URI active:
+The app supports both MySQL and SQLite. By default, it uses SQLite for development (no external database required).
 
-```python
-SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:@localhost/shopeasy"
-```
-
-The default XAMPP root user has no password. If yours does, add it after the colon.
-
-### Create tables and seed data
-
+**For SQLite (default, no setup needed):**
 ```bash
 python seed.py
-```
-
-This drops and recreates all tables and inserts sample categories, subcategories, products, and a demo user. Run it again any time you want to reset the database.
-
-### Run the app
-
-```bash
 python app.py
 ```
 
-Open `http://127.0.0.1:5000` in your browser.
+**For MySQL:**
+1. Start MySQL from the XAMPP control panel
+2. Open phpMyAdmin at `http://localhost/phpmyadmin`
+3. Create a database named `shopeasy`
+4. Set the `DATABASE_URL` environment variable:
+   ```bash
+   # Windows PowerShell
+   $env:DATABASE_URL = "mysql+pymysql://root:@localhost/shopeasy"
+   
+   # Or create a .env file with:
+   # DATABASE_URL=mysql+pymysql://root:@localhost/shopeasy
+   ```
+5. Run seed and app:
+   ```bash
+   python seed.py
+   python app.py
+   ```
+
+The app will automatically use SQLite if no `DATABASE_URL` is set.
 
 ---
 

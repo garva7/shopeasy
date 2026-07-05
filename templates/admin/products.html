@@ -1,4 +1,4 @@
-{% extends 'admin/base_admin.html' %}
+﻿{% extends 'admin/base_admin.html' %}
 {% block title %}Manage Products{% endblock %}
 
 {% block content %}
@@ -32,8 +32,8 @@
                     <td>{{ p.discount_percent or '0' }}%</td>
                     <td>
                         <a href="{{ url_for('admin.edit_product', id=p.id) }}" class="btn btn-sm btn-outline-dark me-1">Edit</a>
-                        <form method="POST" action="{{ url_for('admin.delete_product', id=p.id) }}" class="d-inline"
-                              onsubmit="return confirm('Delete this product?')">
+                        <form method="POST" action="{{ url_for('admin.delete_product', id=p.id) }}" class="d-inline" onsubmit="return confirm('Delete this product?')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
                         </form>
                     </td>

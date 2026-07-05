@@ -31,12 +31,6 @@ main {
 
 .product-card,
 .category-card {
-    transition: box-shadow 0.15s ease-in-out;
-}
-
-.product-card:hover,
-.category-card:hover {
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
 }
 
 .detail-img {

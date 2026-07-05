@@ -18,21 +18,26 @@
                  data-stock="{{ product.stock }}">
                 <span class="original-price me-2">Rs. {{ product.price | int }}</span>
                 <span class="h4 fw-bold text-dark" id="final-price">Rs. {{ final_price }}</span>
+                {% if product.discount_percent and product.discount_percent|int > 0 %}
                 <span class="badge bg-success ms-2">{{ product.discount_percent }}% OFF</span>
+                {% endif %}
             </div>
 
             <p class="mb-4">Availability:
                 {% if product.stock > 0 %}
-                    <span class="badge bg-success" id="stock-status">In Stock</span>
+                    <span class="badge bg-success" id="stock-status">In Stock ({{ product.stock }} available)</span>
                 {% else %}
                     <span class="badge bg-danger" id="stock-status">Out of Stock</span>
                 {% endif %}
             </p>
 
-            <button class="btn btn-dark btn-lg" id="add-to-cart-btn" onclick="addToCart('{{ product.name }}')"
-                    {% if product.stock <= 0 %}disabled{% endif %}>
-                Add to Cart
-            </button>
+            <form method="POST" action="{{ url_for('add_to_cart', product_id=product.id) }}" class="d-inline">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class="btn btn-dark btn-lg" id="add-to-cart-btn"
+                        {% if product.stock <= 0 %}disabled{% endif %}>
+                    Add to Cart
+                </button>
+            </form>
             <div class="mt-3">
                 <a href="{{ url_for('products') }}" class="text-decoration-none">&larr; Back to Products</a>
             </div>
