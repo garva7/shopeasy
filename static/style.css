@@ -23,14 +23,33 @@ main {
     object-fit: cover;
 }
 
+/* Homepage category section product images — smaller cards */
+.category-section .card-img-top {
+    height: 160px;
+    object-fit: cover;
+}
+
 .category-img {
     height: 280px;
     object-fit: cover;
     object-position: center top;
 }
 
+/* Category section separator */
+.category-section + .category-section {
+    border-top: 1px solid #e9ecef;
+    padding-top: 3rem !important;
+}
+
 .product-card,
 .category-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover,
+.category-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
 
 .detail-img {
@@ -84,5 +103,19 @@ main a {
 }
 
 main a:hover {
+    color: var(--brand-darker);
+}
+
+/* Pagination active page */
+.page-item.active .page-link {
+    background-color: var(--brand);
+    border-color: var(--brand);
+}
+
+.page-link {
+    color: var(--brand-dark);
+}
+
+.page-link:hover {
     color: var(--brand-darker);
 }

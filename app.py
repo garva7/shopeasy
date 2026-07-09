@@ -37,7 +37,16 @@ def inject_cart_count():
 @app.route("/")
 def index():
     categories = Category.query.filter_by(parent_id=None).all()
-    return render_template("index.html", categories=categories)
+    # For each top-level category, get up to 6 products from its subcategories
+    category_products = {}
+    for cat in categories:
+        sub_ids = [sub.id for sub in cat.subcategories]
+        if sub_ids:
+            products = Product.query.filter(Product.subcategory_id.in_(sub_ids)).limit(6).all()
+        else:
+            products = []
+        category_products[cat.id] = products
+    return render_template("index.html", categories=categories, category_products=category_products)
 
 
 @app.route("/products")
