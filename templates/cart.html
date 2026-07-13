@@ -35,9 +35,9 @@
                             </td>
                             <td>Rs. {{ item.final_price }}</td>
                             <td>
-                                <form method="POST" action="{{ url_for('update_cart', product_id=item.product.id) }}" class="d-flex align-items-center gap-2">
+                                <form method="POST" action="{{ url_for('update_cart', product_id=item.product.id) }}" class="d-flex align-items-center gap-2 cart-update-form">
                                     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" max="{{ item.product.stock }}" class="form-control form-control-sm" style="width: 80px;">
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" data-stock="{{ item.product.stock }}" class="form-control form-control-sm" style="width: 80px;">
                                     <button type="submit" class="btn btn-sm btn-outline-dark">Update</button>
                                 </form>
                             </td>
@@ -89,4 +89,24 @@
     </div>
     {% endif %}
 </section>
+
+<!-- Out of stock popup -->
+<div class="modal fade" id="out-of-stock-modal" tabindex="-1" aria-labelledby="out-of-stock-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="out-of-stock-label">Out of Stock</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="out-of-stock-message"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='cart.js') }}"></script>
 {% endblock %}
