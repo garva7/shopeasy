@@ -6,7 +6,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="mainNav">
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('products', category='Men') }}">Men</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url_for('products', category='Women') }}">Women</a></li>
@@ -20,9 +20,9 @@
                         </li>
                     {% endif %}
                     <li class="nav-item">
-                        <form method="POST" action="{{ url_for('logout') }}" class="d-inline">
+                        <form method="POST" action="{{ url_for('logout') }}" class="logout-form">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <button type="submit" class="nav-link btn btn-link p-0" style="border: none; background: none;">
+                            <button type="submit" class="nav-link border-0 bg-transparent">
                                 Logout ({{ session.user_name }})
                             </button>
                         </form>
@@ -32,8 +32,9 @@
                 {% endif %}
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url_for('cart') }}">
-                        Cart <span class="badge bg-light text-dark" id="cart-count">{{ cart_count }}</span>
+                    <a class="nav-link d-flex align-items-center gap-2" href="{{ url_for('cart') }}">
+                        <span>Cart</span>
+                        <span class="badge rounded-pill bg-light text-dark" id="cart-count">{{ cart_count }}</span>
                     </a>
                 </li>
             </ul>

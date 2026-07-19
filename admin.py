@@ -3,6 +3,9 @@ from models import db, Category, Product
 
 admin = Blueprint("admin", __name__, url_prefix="/admin")
 
+# Rows per page in the admin list tables.
+PER_PAGE = 10
+
 
 from functools import wraps
 from flask import session
@@ -39,8 +42,11 @@ def dashboard():
 @admin.route("/categories")
 @admin_required
 def categories():
-    cats = Category.query.filter_by(parent_id=None).all()
-    return render_template("admin/categories.html", categories=cats)
+    page = request.args.get("page", 1, type=int)
+    pagination = Category.query.filter_by(parent_id=None).paginate(
+        page=page, per_page=PER_PAGE, error_out=False)
+    return render_template("admin/categories.html",
+                           categories=pagination.items, pagination=pagination)
 
 
 @admin.route("/categories/add", methods=["GET", "POST"])
@@ -90,8 +96,11 @@ def delete_category(id):
 @admin.route("/subcategories")
 @admin_required
 def subcategories():
-    subs = Category.query.filter(Category.parent_id != None).all()
-    return render_template("admin/subcategories.html", subcategories=subs)
+    page = request.args.get("page", 1, type=int)
+    pagination = Category.query.filter(Category.parent_id != None).paginate(
+        page=page, per_page=PER_PAGE, error_out=False)
+    return render_template("admin/subcategories.html",
+                           subcategories=pagination.items, pagination=pagination)
 
 
 @admin.route("/subcategories/add", methods=["GET", "POST"])
@@ -150,8 +159,10 @@ def delete_subcategory(id):
 @admin.route("/products")
 @admin_required
 def products():
-    items = Product.query.all()
-    return render_template("admin/products.html", products=items)
+    page = request.args.get("page", 1, type=int)
+    pagination = Product.query.paginate(page=page, per_page=PER_PAGE, error_out=False)
+    return render_template("admin/products.html",
+                           products=pagination.items, pagination=pagination)
 
 
 @admin.route("/products/add", methods=["GET", "POST"])
@@ -218,5 +229,8 @@ def delete_product(id):
 @admin_required
 def enquiries():
     from models import Enquiry
-    all_enquiries = Enquiry.query.order_by(Enquiry.created_at.desc()).all()
-    return render_template("admin/enquiries.html", enquiries=all_enquiries)
+    page = request.args.get("page", 1, type=int)
+    pagination = Enquiry.query.order_by(Enquiry.created_at.desc()).paginate(
+        page=page, per_page=PER_PAGE, error_out=False)
+    return render_template("admin/enquiries.html",
+                           enquiries=pagination.items, pagination=pagination)

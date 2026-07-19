@@ -44,7 +44,11 @@ with app.app_context():
     kids_hoodies = Category(
         name="Hoodies", parent_id=kids.id, description="Warm hoodies for kids."
     )
-    db.session.add_all([men_shirts, men_jeans, women_dresses, women_tops, kids_hoodies])
+    kids_playwear = Category(
+        name="Playwear", parent_id=kids.id, description="Everyday playwear for kids."
+    )
+    db.session.add_all([men_shirts, men_jeans, women_dresses, women_tops,
+                        kids_hoodies, kids_playwear])
     db.session.commit()
 
     products = [
@@ -187,6 +191,35 @@ with app.app_context():
             stock=8,
             discount_percent=5,
             description="Soft and stretchy track pants for active kids.",
+        ),
+        # Kids — Playwear (3 products)
+        # NOTE: reusing the existing kids images - drop in dedicated art when available.
+        Product(
+            subcategory_id=kids_playwear.id,
+            name="Kids Zip Hoodie",
+            image=img("kids/hoodie.jpeg"),
+            price=649,
+            stock=9,
+            discount_percent=10,
+            description="A full-zip fleece hoodie that layers easily over playwear.",
+        ),
+        Product(
+            subcategory_id=kids_playwear.id,
+            name="Kids Cotton Shorts",
+            image=img("kids/kids-set.avif"),
+            price=349,
+            stock=14,
+            discount_percent=0,
+            description="Breathable cotton shorts built for running around all day.",
+        ),
+        Product(
+            subcategory_id=kids_playwear.id,
+            name="Kids Jogger Set",
+            image=img("kids/kids-tracks.jpeg"),
+            price=799,
+            stock=6,
+            discount_percent=15,
+            description="A matching jogger and sweatshirt set for cooler days.",
         ),
     ]
     db.session.add_all(products)

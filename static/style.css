@@ -13,6 +13,19 @@ main {
     letter-spacing: 0.3px;
 }
 
+/* The logout control is a <button> inside a form; without these it renders at the
+   browser's default button font-size and sits off the nav baseline. */
+.navbar-nav button.nav-link {
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+.navbar-nav .nav-link {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+}
+
 .hero {
     background-color: #f0fdfa;
     border-bottom: 1px solid #d9f2ee;
@@ -23,9 +36,10 @@ main {
     object-fit: cover;
 }
 
-/* Homepage category section product images — smaller cards */
+/* Homepage category section product images.
+   Cards are 3-per-row, so they need a taller image than the old 6-per-row layout. */
 .category-section .card-img-top {
-    height: 160px;
+    height: 240px;
     object-fit: cover;
 }
 

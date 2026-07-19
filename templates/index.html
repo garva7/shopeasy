@@ -31,18 +31,28 @@
     {% if cat_products %}
     <div class="row g-4">
         {% for p in cat_products %}
-        <div class="col-6 col-md-4 col-lg-2">
+        <div class="col-12 col-sm-6 col-lg-4">
             <div class="card product-card h-100">
                 <img src="{{ p.image }}" class="card-img-top" alt="{{ p.name }}">
                 <div class="card-body d-flex flex-column">
                     <h3 class="h6 card-title">{{ p.name }}</h3>
+                    <p class="mb-2">
+                        {% if p.stock > 0 %}
+                            <span class="badge bg-success">In Stock</span>
+                        {% else %}
+                            <span class="badge bg-danger">Out of Stock</span>
+                        {% endif %}
+                    </p>
                     <p class="fw-bold mb-2">Rs. {{ p.price | int }}</p>
                     <div class="mt-auto d-grid gap-1">
                         <a href="{{ url_for('product_detail', product_id=p.id) }}"
                            class="btn btn-sm btn-outline-dark">View</a>
                         <form method="POST" action="{{ url_for('add_to_cart', product_id=p.id) }}">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <button type="submit" class="btn btn-sm btn-dark w-100">Add to Cart</button>
+                            <button type="submit" class="btn btn-sm btn-dark w-100"
+                                    {% if p.stock <= 0 %}disabled{% endif %}>
+                                {% if p.stock > 0 %}Add to Cart{% else %}Unavailable{% endif %}
+                            </button>
                         </form>
                     </div>
                 </div>

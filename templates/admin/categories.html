@@ -39,4 +39,6 @@
         </table>
     </div>
 </div>
+
+{% with endpoint = 'admin.categories' %}{% include 'admin/_pagination.html' %}{% endwith %}
 {% endblock %}

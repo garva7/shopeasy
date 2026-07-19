@@ -1,16 +1,37 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const toggle = document.getElementById('toggle-password');
-    const password = document.getElementById('password');
-    if (toggle && password) {
+    function wireToggle(toggleId, fieldId) {
+        const toggle = document.getElementById(toggleId);
+        const field = document.getElementById(fieldId);
+        if (!toggle || !field) return;
         toggle.addEventListener('click', function () {
-            if (password.type === 'password') {
-                password.type = 'text';
+            if (field.type === 'password') {
+                field.type = 'text';
                 toggle.textContent = 'Hide';
             } else {
-                password.type = 'password';
+                field.type = 'password';
                 toggle.textContent = 'Show';
             }
         });
+    }
+
+    wireToggle('toggle-password', 'password');
+    wireToggle('toggle-confirm-password', 'confirm_password');
+
+    // Live match feedback so the mismatch shows up before submitting.
+    const passwordField = document.getElementById('password');
+    const confirmField = document.getElementById('confirm_password');
+    if (passwordField && confirmField) {
+        function checkMatch() {
+            if (!confirmField.value) {
+                confirmField.classList.remove('is-invalid', 'is-valid');
+                return;
+            }
+            const matches = passwordField.value === confirmField.value;
+            confirmField.classList.toggle('is-invalid', !matches);
+            confirmField.classList.toggle('is-valid', matches);
+        }
+        confirmField.addEventListener('input', checkMatch);
+        passwordField.addEventListener('input', checkMatch);
     }
 
     const loginForm = document.querySelector('form[action="/login"]');
@@ -93,6 +114,15 @@ document.addEventListener('DOMContentLoaded', function () {
             valid = false;
         } else if (password.length < 6) {
             showError('password', 'Password must be at least 6 characters.');
+            valid = false;
+        }
+
+        const confirmPassword = document.getElementById('confirm_password').value;
+        if (!confirmPassword) {
+            showError('confirm_password', 'Please confirm your password.');
+            valid = false;
+        } else if (password !== confirmPassword) {
+            showError('confirm_password', 'Passwords do not match.');
             valid = false;
         }
 

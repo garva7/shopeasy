@@ -21,7 +21,7 @@
             <tbody>
                 {% for e in enquiries %}
                 <tr>
-                    <td>{{ loop.index }}</td>
+                    <td>{{ (pagination.page - 1) * pagination.per_page + loop.index }}</td>
                     <td>{{ e.name }}</td>
                     <td>{{ e.email }}</td>
                     <td>{{ e.phone }}</td>
@@ -38,4 +38,6 @@
         </table>
     </div>
 </div>
+
+{% with endpoint = 'admin.enquiries' %}{% include 'admin/_pagination.html' %}{% endwith %}
 {% endblock %}

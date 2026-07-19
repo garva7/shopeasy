@@ -109,12 +109,15 @@ def register():
         phone = request.form.get("phone", "").strip()
         address = request.form.get("address", "").strip()
         password = request.form.get("password", "")
+        confirm_password = request.form.get("confirm_password", "")
 
         error = None
         if not name or not email or not password:
             error = "Name, email and password are required."
         elif len(password) < 6:
             error = "Password must be at least 6 characters."
+        elif password != confirm_password:
+            error = "Passwords do not match."
         elif not re.match(r'^[^\s@]+@[^\s@]+\.[^\s@]+$', email):
             error = "Enter a valid email address."
         elif phone and not re.match(r'^[0-9]{10}$', phone):

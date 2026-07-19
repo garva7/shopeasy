@@ -22,7 +22,7 @@
             <tbody>
                 {% for sub in subcategories %}
                 <tr>
-                    <td>{{ loop.index }}</td>
+                    <td>{{ (pagination.page - 1) * pagination.per_page + loop.index }}</td>
                     <td>{{ sub.name }}</td>
                     <td>{{ sub.parent.name if sub.parent else '—' }}</td>
                     <td>{{ sub.description or '—' }}</td>
@@ -41,4 +41,6 @@
         </table>
     </div>
 </div>
+
+{% with endpoint = 'admin.subcategories' %}{% include 'admin/_pagination.html' %}{% endwith %}
 {% endblock %}
